@@ -1,7 +1,8 @@
 ﻿using System;
 using Demo.Models;
-using Demo.WeaponBehavior;
 using Demo.LaundryBehavior;
+using Demo.DefenceBehavior;
+using Demo.AttackBehavior;
 
 namespace Demo
 {
@@ -11,12 +12,12 @@ namespace Demo
         {
             Character[] characters = new Character[]
             {
-                new King(new BowAndArrowBehavior(),new WashIntoTheRiver()),
-                new Queen(new KnifeBehavior(),new WashWithWashingMachine()),
-                new Knight(new SwordBehavior(),new WashByHand()),
-                new SmurfStorm(new MutatedSeaBehavior(),new WashByHand()),
-                new Smurfette(new ToothPasteBehavior(),new WashWithWashingMachine()),
-                new Troll(new AxeBahavior(),new WashIntoTheRiver())
+                new King(new DefenceByShield(),new AttackWithSword(),new WashIntoTheRiver()),
+                new Queen(new DefenceByArmour(),new AttackWithSword(),new WashWithWashingMachine()),
+                new Knight(new DefenceByShield(),new AttackWithSword(),new WashByHand()),
+                new SmurfStorm(new DefenceByShield(),new AttackWithSword(),new WashByHand()),
+                new Smurfette(new DefenceByArmour(),new AttackWithSword(),new WashByHand()),
+                new Troll(new DefenceByArmour(),new AttackWithAxe(),new WashIntoTheRiver())
             };
 
             foreach (var character in characters)
@@ -27,9 +28,9 @@ namespace Demo
                         DoState(character);
                         DoSmurfetteNewState(character);
                         break;
-                    case "SmurfStorm":
-                         DoState(character);
-                        DoSmurfStormNewState(character);
+                    case "King":
+                        DoState(character);
+                        DoKingNewState(character);
                         break;
                     default:
                         DoState(character);
@@ -40,26 +41,30 @@ namespace Demo
 
             static void DoSmurfetteNewState(Character character)
             {
-                Console.WriteLine("Now Smurfette decided to take a new weapon!");
-                character.SetWeaponBehavior(new ToiletPaperBehavior());
+                Console.WriteLine("Now Smurfette decided to use different defence!");
+                character.SetDefenceBehavior(new DefenceByShield());
                 Console.Write($"{character.GetType().Name} : ");
-                character.PerformUseWeapon();
+                character.PerformDefence();
             }
 
-            static void DoSmurfStormNewState(Character character)
+            static void DoKingNewState(Character character)
             {
-                Console.WriteLine("Dynamically set behavior to an object. Looks like our SmurfStorm will use other weapon.");
-                character.SetWeaponBehavior(new BowAndArrowBehavior());
+                Console.WriteLine("Dynamically set behavior to an object. Looks like our King will attack with other weapon.");
+                character.SetAttackBehavior(new AttackWithKnife());
                 Console.Write($"{character.GetType().Name} : ");
-                character.PerformUseWeapon("Peoooww!");
+                character.PerformAttack("Hayah!");
             }
 
             static void DoState(Character character)
             {
+                Console.WriteLine("Fighting ...");
                 character.Fight();
-                character.PerformUseWeapon();
-                character.PerformDamage();
-                character.PerformLaundry();
+                Console.WriteLine("Attacking ...");
+                character.PerformAttack();
+                Console.WriteLine("Defence  ...");
+                character.PerformDefence();
+                Console.WriteLine("Washing ...");
+                character.PerformWash();
             }
         }
 

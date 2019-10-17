@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Demo
+namespace Demo.LaundryBehavior
 {
     public interface ILaundryBehavior
     {

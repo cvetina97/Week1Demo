@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Demo.AttackBehavior;
+using Demo.DefenceBehavior;
+using Demo.LaundryBehavior;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,50 +9,68 @@ namespace Demo
 {
     public abstract class Character
     {
-        IWeaponBehavior weaponBehavior;
+        IAttackBehavior attackBehavior;
+        IDefenceBehavior defenceBehavior;
         ILaundryBehavior laundryBehavior;
+        
 
 
-        public Character(IWeaponBehavior wb)
+        public Character(IDefenceBehavior defence)
         {
-            this.weaponBehavior = wb;
+            defenceBehavior = defence;
         }
 
-        public Character(IWeaponBehavior wb, ILaundryBehavior lb) : this(wb)
+        public Character(IDefenceBehavior defence,ILaundryBehavior laundry)
         {
-            this.laundryBehavior = lb;
+            defenceBehavior = defence;
+            laundryBehavior = laundry;
+        }
+
+        public Character(IDefenceBehavior defence, IAttackBehavior attack) : this(defence)
+        {
+            attackBehavior = attack;
+        }
+
+        public Character(IDefenceBehavior defence, IAttackBehavior attack,ILaundryBehavior laundry) : this(defence,attack)
+        {
+            laundryBehavior = laundry;
         }
 
         public abstract void Fight();
 
-        public virtual void PerformUseWeapon()
+        public virtual void PerformAttack()
         {
-            this.weaponBehavior.UseWeapon();
+            attackBehavior.Attack();
         }
 
-        public virtual void PerformDamage()
+        public virtual void PerformDefence()
         {
-            this.weaponBehavior.Damage();
+            defenceBehavior.Defence();
         }
 
-        public virtual void PerformLaundry()
+        public virtual void PerformWash()
         {
-            this.laundryBehavior.Wash();
+            laundryBehavior.Wash();
         }
 
-        public void SetWeaponBehavior(IWeaponBehavior wb)
+        public void SetAttackBehavior(IAttackBehavior attack)
         {
-            this.weaponBehavior = wb;
+            attackBehavior = attack;
         }
 
-        public void SetLaundryBehavior(ILaundryBehavior lb)
+        public void SetDefenceBehavior(IDefenceBehavior defence)
         {
-            this.laundryBehavior = lb;
+            defenceBehavior = defence;
         }
 
-        internal void PerformUseWeapon(string perform)
+        public void SetLaundryBehavior(ILaundryBehavior laundry)
         {
-            Console.WriteLine(perform);
+            laundryBehavior = laundry;
+        }
+
+        internal void PerformAttack(string attack)
+        {
+            Console.WriteLine(attack);
         }
 
 
